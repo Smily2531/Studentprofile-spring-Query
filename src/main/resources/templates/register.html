@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Register Student</title>
+    <meta charset="UTF-8">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0d0d0d;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background: #111;
+            padding: 40px;
+            border-radius: 16px;
+            width: 500px;
+            box-shadow: 0 0 20px rgba(255, 0, 128, 0.5);
+            color: #fff;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 600;
+            font-size: 24px;
+            background: linear-gradient(90deg,#6a11cb,#ff6a00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        label {
+            font-weight: 600;
+            margin-top: 14px;
+            display: block;
+            color: #bbb;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 6px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        input:focus, select:focus {
+            box-shadow: 0 0 8px #ff6a00;
+        }
+
+        input[type="radio"], input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+        }
+
+        .form-group {
+            margin-top: 12px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 25px;
+            background: linear-gradient(90deg,#6a11cb,#ff6a00);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 0 20px rgba(255,106,0,0.5);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(106,17,203,0.8);
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h2><i class="fa-solid fa-user-graduate"></i> Register New Student</h2>
+    <form th:action="@{/student/register}" method="post" enctype="multipart/form-data">
+
+        <label><i class="fa-solid fa-user"></i> Name:</label>
+        <input type="text" name="name" required>
+
+        <label><i class="fa-solid fa-envelope"></i> Email:</label>
+        <input type="email" name="email" required>
+
+        <label><i class="fa-solid fa-code-branch"></i> Branch:</label>
+        <select name="branch">
+            <option value="CSE">CSE</option>
+            <option value="ECE">ECE</option>
+            <option value="EEE">EEE</option>
+            <option value="MECH">MECH</option>
+            <option value="CIVIL">CIVIL</option>
+        </select>
+
+        <label><i class="fa-solid fa-venus-mars"></i> Gender:</label>
+        <div class="form-group">
+            <input type="radio" name="gender" value="Male"> Male
+            <input type="radio" name="gender" value="Female"> Female
+        </div>
+
+        <label><i class="fa-solid fa-laptop-code"></i> Skills:</label>
+        <div class="form-group">
+            <input type="checkbox" name="skills" value="Java"> Java
+            <input type="checkbox" name="skills" value="Python"> Python
+            <input type="checkbox" name="skills" value="C"> C
+            <input type="checkbox" name="skills" value="HTML"> HTML
+        </div>
+
+        <label><i class="fa-solid fa-calendar"></i> Date of Birth:</label>
+        <input type="date" name="dob">
+
+        <label><i class="fa-solid fa-image"></i> Profile Pic:</label>
+        <input type="file" name="photoFile" accept="image/*">
+
+        <button type="submit"><i class="fa-solid fa-paper-plane"></i> Register</button>
+    </form>
+</div>
+</body>
+</html>

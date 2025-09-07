@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Success</title>
+    <meta charset="UTF-8">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0d0d0d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #fff;
+        }
+
+        .success-box {
+            background: #111;
+            padding: 60px 80px;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0 0 25px rgba(255,106,0,0.6);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            margin-bottom: 30px;
+            font-weight: 600;
+            font-size: 22px;
+            background: linear-gradient(90deg,#6a11cb,#ff6a00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2 i {
+            margin-right: 10px;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            background: linear-gradient(90deg,#6a11cb,#ff6a00);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 0 20px rgba(255,106,0,0.6);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 35px rgba(106,17,203,0.9);
+        }
+    </style>
+</head>
+<body>
+<div class="success-box">
+    <h2><i class="fa-solid fa-circle-check"></i> Student Registered Successfully!</h2>
+    <a th:href="@{/student/register}" class="btn"><i class="fa-solid fa-plus"></i> Register Another Student</a>
+</div>
+</body>
+</html>
