@@ -28,14 +28,24 @@ public class StudentController {
         return "register";
     }
 
+    // Accept skills[] and join them into one String for StudentEntity
     @PostMapping("/register")
     public String submitRegister(@ModelAttribute StudentEntity student,
+                                 @RequestParam(value = "skills", required = false) String[] skills,
                                  @RequestParam("photoFile") MultipartFile photoFile,
                                  Model model) throws IOException {
+
+        if (skills != null && skills.length > 0) {
+            student.setSkills(String.join(",", skills));
+        } else {
+            student.setSkills(null);
+        }
+
         service.saveStudent(student, photoFile);
+
         model.addAttribute("student", student);
         if (student.getPhoto() != null) {
-            String base64Image=Base64.getEncoder().encodeToString(student.getPhoto());
+            String base64Image = Base64.getEncoder().encodeToString(student.getPhoto());
             model.addAttribute("photoBase64", base64Image);
         }
         return "register-success";
@@ -61,6 +71,19 @@ public class StudentController {
         }
 
         return "view";
+    }
+
+    @GetMapping("/sort")
+    public String sortStudents(@RequestParam(required = false) String field,
+                               @RequestParam(required = false) String order,
+                               Model model) {
+        if (field == null) field = "marks";
+        if (order == null) order = "asc";
+
+        model.addAttribute("students", service.getAllSorted(field, order));
+        model.addAttribute("field", field);
+        model.addAttribute("order", order);
+        return "sort-students";
     }
 
     private String formatDobAsRequested(LocalDate dob) {

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sort Students</title>
+    <meta charset="utf-8"/>
+    <style>
+        body { background:#0f0f0f; color:#eee; font-family:"Segoe UI", Roboto, Arial; padding:20px; }
+        .container { max-width:1100px; margin:10px auto; }
+        .panel {
+            background: linear-gradient(180deg, rgba(20,20,20,0.95), rgba(12,12,12,0.95));
+            border-radius: 10px; padding:18px; box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+            border-left:6px solid #ff2d6f; border-right:6px solid #ff8a00;
+        }
+        h2 { text-align:center; color:#ff6fb3; margin:6px 0 14px; }
+        .controls { text-align:center; margin-bottom:14px; color:#ddd; }
+        .controls label { margin-right:10px; }
+        select { padding:6px; border-radius:6px; background:#111; color:#fff; border:none; }
+
+        table {
+            width:100%; border-collapse:collapse; margin-top:12px; background:transparent;
+        }
+        th, td { padding:12px 10px; border-bottom:1px solid rgba(255,255,255,0.05); text-align:center; }
+        th { background:#15b58f; color:white; font-weight:700; }
+        td { color:#efefef; font-size:15px; }
+
+        img { width:60px; height:60px; border-radius:50%; object-fit:cover; display:block; margin:0 auto; }
+
+        .skills-count { font-size:12px; color:#bbb; margin-top:6px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="panel">
+        <h2>Sort Students</h2>
+
+        <!-- Controls -->
+        <div class="controls">
+            <form method="get" action="/student/sort" style="display:inline-block;">
+                <label><input type="radio" name="field" value="marks" th:checked="${field=='marks'}"/> Marks</label>
+                <label><input type="radio" name="field" value="skills" th:checked="${field=='skills'}"/> Skills</label>
+
+                <select name="order">
+                    <option value="asc" th:selected="${order=='asc'}">Ascending</option>
+                    <option value="desc" th:selected="${order=='desc'}">Descending</option>
+                </select>
+
+                <button type="submit" style="padding:6px 10px; border-radius:6px; border:none; cursor:pointer; margin-left:8px;">Sort</button>
+            </form>
+        </div>
+
+        <!-- Table: show only if students exist -->
+        <table th:if="${students != null and !students.isEmpty()}">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Branch</th>
+                    <th>DOB (Age)</th>
+                    <th>Skills</th>
+                    <th>Marks</th>
+                    <th>Photo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="s : ${students}">
+                    <td th:text="${s.id}"></td>
+                    <td th:text="${s.name}"></td>
+                    <td th:text="${s.branch}"></td>
+                    <!-- Show age as years, months, days -->
+                    <td th:text="${s.ageString}"></td>
+                    <td>
+                        <div th:text="${s.skills}">-</div>
+                        <div class="skills-count" th:text="${s.skillsCount + ' skill(s)'}"></div>
+                    </td>
+                    <td th:text="${s.marks}"></td>
+                    <td>
+                        <img th:if="${s.photoBase64 != null}"
+                             th:src="'data:image/jpeg;base64,' + ${s.photoBase64}"
+                             alt="profile"/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

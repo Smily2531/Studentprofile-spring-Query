@@ -2,7 +2,10 @@ package com.example.demo;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -20,6 +23,29 @@ public class StudentService {
     }
 
     public StudentEntity getById(Integer id) {
-        return repo.getById(id);
+        return repo.findById(id).orElse(null);
+    }
+
+    /**
+     * Returns a list sorted in-memory:
+     * - if field == "marks" -> compare by marks (null-safe)
+     * - if field == "skills" -> compare by number of selected skills (skillsCount)
+     * direction = "asc" or "desc"
+     */
+    public List<StudentEntity> getAllSorted(String field, String direction) {
+        List<StudentEntity> all = repo.findAll();
+
+        Comparator<StudentEntity> comparator;
+        if ("skills".equalsIgnoreCase(field)) {
+            comparator = Comparator.comparingInt(StudentEntity::getSkillsCount);
+        } else { // default to marks
+            comparator = Comparator.comparingInt(s -> s.getMarks() == null ? Integer.MIN_VALUE : s.getMarks());
+        }
+
+        if ("desc".equalsIgnoreCase(direction)) comparator = comparator.reversed();
+
+        return all.stream()
+                  .sorted(comparator)
+                  .collect(Collectors.toList());
     }
 }
