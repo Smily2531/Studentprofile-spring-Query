@@ -54,21 +54,28 @@ public class StudentController {
     @GetMapping("/view/{id}")
     public String viewById(@PathVariable Integer id, Model model) {
         StudentEntity s = service.getById(id);
+
         if (s == null) {
             model.addAttribute("error", "Student not found with id " + id);
+            model.addAttribute("student", new StudentEntity()); // prevent null pointer
+            model.addAttribute("dobFormatted", "");
+            model.addAttribute("photoBase64", null);
             return "view";
         }
+
         model.addAttribute("student", s);
 
+        String dobFormatted = "";
         if (s.getDob() != null) {
-            String dobFormatted = formatDobAsRequested(s.getDob());
-            model.addAttribute("dobFormatted", dobFormatted);
+            dobFormatted = formatDobAsRequested(s.getDob());
         }
+        model.addAttribute("dobFormatted", dobFormatted);
 
+        String base64Image = null;
         if (s.getPhoto() != null) {
-            String base64Image = Base64.getEncoder().encodeToString(s.getPhoto());
-            model.addAttribute("photoBase64", base64Image);
+            base64Image = Base64.getEncoder().encodeToString(s.getPhoto());
         }
+        model.addAttribute("photoBase64", base64Image);
 
         return "view";
     }

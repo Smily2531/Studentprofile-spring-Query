@@ -49,7 +49,7 @@
         .avatar {
             width: 160px;
             height: 160px;
-            border-radius: 16px; /* square with slightly rounded corners */
+            border-radius: 16px;
             object-fit: cover;
             margin-bottom: 20px;
             border: 4px solid #ff4ecb;
@@ -70,7 +70,6 @@
             color: #ddd;
         }
 
-        /* Gradient pink for first column (ID, Branch, DOB etc.) */
         td:first-child {
             font-weight: 600;
             background: linear-gradient(90deg,#ff4ecb,#ff99cc);
@@ -100,21 +99,37 @@
             transform: translateY(-3px);
             box-shadow: 0 0 35px rgba(106,17,203,0.9);
         }
+
+        .error-msg {
+            color: #ff4ecb;
+            font-weight: 600;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
 <div class="profile-card">
-    <img th:if="${photoBase64 != null}" th:src="'data:image/png;base64,' + ${photoBase64}" class="avatar"/>
-    <h2><i class="fa-solid fa-user-graduate"></i> <span th:text="${student.name}"></span></h2>
-    <table>
-        <tr><td><i class="fa-solid fa-id-card"></i> ID:</td><td th:text="${student.id}"></td></tr>
-        <tr><td><i class="fa-solid fa-code-branch"></i> Branch:</td><td th:text="${student.branch}"></td></tr>
-        <tr><td><i class="fa-solid fa-envelope"></i> Email:</td><td th:text="${student.email}"></td></tr>
-        <tr><td><i class="fa-solid fa-venus-mars"></i> Gender:</td><td th:text="${student.gender}"></td></tr>
-        <tr><td><i class="fa-solid fa-laptop-code"></i> Skills:</td><td th:text="${student.skills}"></td></tr>
-        <tr><td><i class="fa-solid fa-graduation-cap"></i> Marks:</td><td th:text="${student.marks}"></td></tr>
-        <tr><td><i class="fa-solid fa-calendar"></i> DOB:</td><td th:text="${dobFormatted}"></td></tr>
-    </table>
+
+    <!-- Show error if student not found -->
+    <div th:if="${error}">
+        <p class="error-msg"><i class="fa-solid fa-triangle-exclamation"></i> <span th:text="${error}"></span></p>
+    </div>
+
+    <!-- Show student profile if exists -->
+    <div th:if="${student != null and student.name != null}">
+        <img th:if="${photoBase64 != null}" th:src="'data:image/png;base64,' + ${photoBase64}" class="avatar"/>
+        <h2><i class="fa-solid fa-user-graduate"></i> <span th:text="${student.name}"></span></h2>
+        <table>
+            <tr><td><i class="fa-solid fa-id-card"></i> ID:</td><td th:text="${student.id}"></td></tr>
+            <tr><td><i class="fa-solid fa-code-branch"></i> Branch:</td><td th:text="${student.branch}"></td></tr>
+            <tr><td><i class="fa-solid fa-envelope"></i> Email:</td><td th:text="${student.email}"></td></tr>
+            <tr><td><i class="fa-solid fa-venus-mars"></i> Gender:</td><td th:text="${student.gender}"></td></tr>
+            <tr><td><i class="fa-solid fa-laptop-code"></i> Skills:</td><td th:text="${student.skills}"></td></tr>
+            <tr><td><i class="fa-solid fa-graduation-cap"></i> Marks:</td><td th:text="${student.marks}"></td></tr>
+            <tr><td><i class="fa-solid fa-calendar"></i> DOB:</td><td th:text="${dobFormatted}"></td></tr>
+        </table>
+    </div>
+
     <a href="/student/register" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
 </div>
 </body>
